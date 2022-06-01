@@ -7,11 +7,13 @@ const canvas = document.getElementById("gameCanvas");
 const  ctx = canvas.getContext("2d");
 const tileMap = new TileMap(tileSize);
 const pacman = tileMap.getPacman(viteza);
+const enemies = tileMap.getEnemies(viteza);
 
 //functie pt redesenare ecran in fiecare secunda
 function gameLoop(){
        tileMap.draw(ctx);
        pacman.draw(ctx);
+       enemies.forEach(enemy => enemy.draw(ctx));
 }
 tileMap.setCanvasSize(canvas);
 

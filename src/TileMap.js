@@ -1,5 +1,6 @@
 import Pacman from './Pacman.js';
 import Direction from './Direction.js';
+import Enemy from './Enemy.js';
 
 export default class TileMap{
     constructor(tileSize) {
@@ -11,17 +12,17 @@ export default class TileMap{
         this.wall.src = '../images/wall.png';
 
     }
-    //1 pt pereti, o pt puncte, 4 pt pacman, 4 pt spatiu gol
+    //1 pt pereti, o pt puncte, 4 pt pacman, 5 pt spatiu gol, 6 pt fantome 
     map = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1],
         [1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-        [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1],
+        [1, 0, 1, 6, 1, 1, 0, 1, 0, 1, 0, 1, 1],
         [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ];
 
@@ -71,6 +72,21 @@ export default class TileMap{
                 }
             }        
         }
+    }
+
+    getEnemies(viteza) {
+        const enemies = [];
+
+        for(let i = 0; i < this.map.length; i ++) {
+            for(let j = 0; j < this.map[i].lngth; j ++) {
+                const tile = this.map[i][j];
+                if(tile === 6) {
+                    this.map[i][j] = 0;
+                    enemies.push(new Enemy(j * this.tileSize, i * this.tileSize, this.tileSize, viteza, this));
+                }
+            }
+        }
+        return enemies;
     }
 
     //setez dimensiunile mapei dupa array-ul declarat
