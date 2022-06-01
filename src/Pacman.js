@@ -16,6 +16,8 @@ export default class Pacman{
 
         this.pacmanRotation = this.Rotation.right;
 
+        this.wakaSound = new Audio('../sounds/waka.wav');
+
 
         document.addEventListener("keydown", this.#keydown);
 
@@ -35,8 +37,9 @@ export default class Pacman{
         this.#animate();
         this.#eatDot();
 
+        //rotire pacman
         const size = this.tileSize / 2;
-
+        //salvez starea curenta
         ctx.save();
         ctx.translate(this.x + size, this.y + size);
         ctx.rotate((this.pacmanRotation * 90 * Math.PI / 180));
@@ -94,7 +97,6 @@ export default class Pacman{
     };
 
     #move() {
-
         if(this.currentDirection !== this.requestDirection){
             if(Number.isInteger(this.x / this.tileSize) && Number.isInteger(this.y / this.tileSize)) {
                 if(!this.tileMap.didCollideWithEnviroment(this.x, this.y, this.requestDirection))
@@ -107,7 +109,9 @@ export default class Pacman{
             this.pacmanAnimationTimer = null;
             this.pacmanIndex = 1;
             return;
-        }
+        } else if (this.currentDirection != null && this.pacmanAnimationTimer == null) {
+            this.pacmanAnimationTimer = this.pacmanAnimationTimerDefault;
+          }
 
         switch(this.currentDirection){
             case Direction.up:
@@ -145,7 +149,9 @@ export default class Pacman{
     }
 
     #eatDot() {
-        
+        if(this.tileMap.eatDot(this.x, this.y)) {
+             this.wakaSound.play();   
+        }
     }
 
 }

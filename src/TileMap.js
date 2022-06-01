@@ -11,7 +11,7 @@ export default class TileMap{
         this.wall.src = '../images/wall.png';
 
     }
-    //1 pt pereti, o pt puncte, 4 pt pacman
+    //1 pt pereti, o pt puncte, 4 pt pacman, 4 pt spatiu gol
     map = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -37,6 +37,9 @@ export default class TileMap{
                 else if(tile === 0) {
                     this.#drawDot(ctx, j, i, this.tileSize);
                 }
+                // else {
+                //     this.#drawBlank(ctx, j, i, this.tilesize);
+                // }
 
                 //ctx.strokeStyle = "yellow";
                 //ctx.strokeRect(j * this.tileSize, i * this.tileSize, this.tileSize, this.tileSize);
@@ -52,6 +55,12 @@ export default class TileMap{
         ctx.drawImage(this.wall, j * this.tileSize, i*this.tileSize, size, size);
     }
 
+    // #drawBlank(ctx, j, i, size) {
+        
+    //     ctx.fillRect (j * this.tileSize, i * this.tileSize, size, size);
+    //     ctx.fillStyle = "black";
+    // }
+
     getPacman(viteza) {
         for(let i = 0; i < this.map.length; i ++) {
             for(let j = 0; j< this.map[i].length; j ++) {
@@ -60,7 +69,8 @@ export default class TileMap{
                     this.map[i][j] = 0;
                     return new Pacman(j * this.tileSize, i * this.tileSize, this.tileSize, viteza, this); 
                 }
-            }        }
+            }        
+        }
     }
 
     //setez dimensiunile mapei dupa array-ul declarat
@@ -70,19 +80,15 @@ export default class TileMap{
     }
 
     didCollideWithEnviroment(x, y, direction) {
-        if(Number.isInteger(x / this.tileSize) && Number.isInteger(y / this.tileSize)) {
-            if (direction == null) {
-                return;
-            }
+        if (direction == null) {
+            return;
+        }
 
+        if(Number.isInteger(x / this.tileSize) && Number.isInteger(y / this.tileSize)) {
             let j = 0;
             let i = 0;
             let next_j = 0;
             let next_i = 0;
-
-            // if(this.tileMap.didCollideWithEnviroment(this.x, this.y, this.currentDirection)) {
-            //     return;
-            // }
 
             switch(direction) {
                 case Direction.right:
@@ -112,6 +118,18 @@ export default class TileMap{
             }
         }
 
+        return false;
+    }
+
+    eatDot (x, y) {
+        const i = y / this.tileSize;
+        const j = x / this.tileSize;
+        if(Number.isInteger(i) && Number.isInteger(j)) {
+            if(this.map[i][j] === 0) {
+                this.map[i][j] = 5;
+                return true;
+            }
+        }
         return false;
     }
 }
