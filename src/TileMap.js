@@ -1,4 +1,5 @@
 import Pacman from './Pacman.js';
+import Direction from './Direction.js';
 
 export default class TileMap{
     constructor(tileSize) {
@@ -62,9 +63,55 @@ export default class TileMap{
             }        }
     }
 
-//setez dimensiunile mapei dupa array-ul declarat
+    //setez dimensiunile mapei dupa array-ul declarat
     setCanvasSize(canvas) {
         canvas.width = this.map[0].length * this.tileSize;
         canvas.height = this.map.length * this.tileSize;
+    }
+
+    didCollideWithEnviroment(x, y, direction) {
+        if(Number.isInteger(x / this.tileSize) && (y / this.tileSize)) {
+            if (direction == null) {
+                return;
+            }
+
+            let j = 0;
+            let i = 0;
+            let next_j = 0;
+            let next_i = 0;
+
+            // if(this.tileMap.didCollideWithEnviroment(this.x, this.y, this.currentDirection)) {
+            //     return;
+            // }
+
+            switch(direction) {
+                case Direction.right:
+                    next_j = x + this.tileSize;
+                    j = next_j/this.tileSize;
+                    i = y / this.tileSize;
+                    break;
+                case Direction.left:
+                    next_j = x - this.tileSize;
+                    j = next_j/this.tileSize;
+                    i = y / this.tileSize;
+                    break;
+                case Direction.up:
+                    next_i = y - this.tileSize;
+                    i = next_i/this.tileSize;
+                    j = x / this.tileSize;
+                    break;
+                case Direction.down:
+                    next_i = y + this.tileSize;
+                    i = next_i/this.tileSize;
+                    j = x / this.tileSize;
+                break;
+            }
+            const tile = this.map[i][j];
+            if(tile === 1) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

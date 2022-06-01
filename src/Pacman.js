@@ -73,8 +73,12 @@ export default class Pacman{
 
         if(this.currentDirection !== this.requestDirection){
             if(Number.isInteger(this.x / this.tileSize) && Number.isInteger(this.y / this.tileSize)) {
-                this.currentDirection = this.requestDirection;
+                if(!this.tileMap.didCollideWithEnviroment(this.x, this.y, this.requestDirection))
+                    this.currentDirection = this.requestDirection;
             }
+        }
+        if(this.tileMap.didCollideWithEnviroment(this.x, this.y, this.requestDirection)) {
+            return;
         }
 
         switch(this.currentDirection){
@@ -83,7 +87,13 @@ export default class Pacman{
                 break;
             case Direction.down:
                 this.y += this.viteza;
-                break;  
+                break;
+            case Direction.left:
+                this.x -= this.viteza;
+                break;
+            case Direction.right:
+                this.x += this.viteza;
+                break;    
         }
     }
 
