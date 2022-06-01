@@ -70,7 +70,7 @@ export default class TileMap{
     }
 
     didCollideWithEnviroment(x, y, direction) {
-        if(Number.isInteger(x / this.tileSize) && (y / this.tileSize)) {
+        if(Number.isInteger(x / this.tileSize) && Number.isInteger(y / this.tileSize)) {
             if (direction == null) {
                 return;
             }
